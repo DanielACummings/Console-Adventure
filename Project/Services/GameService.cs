@@ -8,7 +8,6 @@ namespace ConsoleAdventure.Project
   public class GameService : IGameService
   {
     private IGame _game { get; set; }
-
     public List<string> Messages { get; set; }
     public GameService()
     {
@@ -16,9 +15,10 @@ namespace ConsoleAdventure.Project
       Messages = new List<string>();
     }
 
+    //default messages
     public void CurrentRoom()
     {
-      Console.WriteLine($"You're {_game.CurrentRoom.Name}.");
+      Console.WriteLine($"You're {_game.CurrentRoom.Name}.\n");
     }
 
     public void Go(string direction)
@@ -53,15 +53,19 @@ namespace ConsoleAdventure.Project
     {
       if (_game.CurrentPlayer.Inventory.Count > 0)
       {
+        Console.Write("Inventory:\n");
         foreach (Item item in _game.CurrentPlayer.Inventory)
         {
           Console.WriteLine(item.Name);
         }
+        Console.WriteLine();
       }
       else
       {
         Console.WriteLine("Your inventory is empty.");
       }
+      CurrentRoom();
+      Console.WriteLine();
     }
 
     public void Look()
@@ -97,6 +101,7 @@ namespace ConsoleAdventure.Project
       }
       _game.CurrentPlayer.AddToInventory(activeItem);
       _game.CurrentRoom.Items.Remove(activeItem);
+      CurrentRoom();
     }
     ///<summary>
     ///No need to Pass a room since Items can only be used in the CurrentRoom
@@ -105,7 +110,22 @@ namespace ConsoleAdventure.Project
     ///</summary>
     public void UseItem(string itemName)
     {
-      throw new System.NotImplementedException();
+      switch (itemName)
+      {
+        case "ladder":
+          if (_game.CurrentRoom.Name == "in the pit")
+          {
+            Messages.Add($"You use the ladder to escape! Well done, {_game.CurrentPlayer.Name}!");
+          }
+          else
+          {
+            Messages.Add("You can't find a good use for that in this room.\n");
+          }
+          break;
+        default:
+          Messages.Add("You can't use that.\n");
+          break;
+      }
     }
   }
 }
