@@ -3,9 +3,10 @@ using ConsoleAdventure.Project.Models;
 
 namespace ConsoleAdventure.Project.Interfaces
 {
-    public interface IPlayer
-    {
-        string Name { get; set; }
-        List<Item> Inventory { get; set; }
-    }
+  public interface IPlayer
+  {
+    string Name { get; set; }
+    List<Item> Inventory { get; set; }
+    void AddToInventory(Item item);
+  }
 }

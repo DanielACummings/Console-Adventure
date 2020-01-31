@@ -19,7 +19,9 @@ namespace ConsoleAdventure.Project.Controllers
       _gameService.Setup(playerName);
       Console.Clear();
 
-      Console.WriteLine("On a brisk dawn while hiking along the base of the Misty Mountains, you slip & fall into a pit! You then attempt to climb out but are unable to. Your best option for escape is to take your chances by entering a cave opening which goes east directly into the mountain...\n");
+      Console.WriteLine("On a brisk dawn while hiking along the base of the Misty Mountains,you slip & fall into a pit! You then attempt to climb out but are unable to. With nothing but a firestarter kit, you must figure out how to escape before nightfall comes when the mountainside will be swarming with orcs!\n");
+      _gameService.CurrentRoom();
+      _gameService.Look();
       while (_playing)
       {
         Print();
@@ -39,6 +41,9 @@ namespace ConsoleAdventure.Project.Controllers
       Console.Clear();
       switch (command)
       {
+        case "take":
+          _gameService.TakeItem(option);
+          break;
         case "go":
           _gameService.Go(option);
           break;

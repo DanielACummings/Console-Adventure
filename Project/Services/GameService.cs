@@ -16,6 +16,11 @@ namespace ConsoleAdventure.Project
       Messages = new List<string>();
     }
 
+    public void CurrentRoom()
+    {
+      Console.WriteLine($"You're {_game.CurrentRoom.Name}.");
+    }
+
     public void Go(string direction)
     {
       if (_game.CurrentRoom.Exits.ContainsKey(direction))
@@ -26,7 +31,18 @@ namespace ConsoleAdventure.Project
       {
         Console.WriteLine("Congratulations, you walked into a wall. Perhaps try another direction?");
       }
-      Console.WriteLine($"You're {_game.CurrentRoom.Name}\n");
+
+      // if (_game.CurrentPlayer.Inventory.Contains("Torch"))
+      // {
+      //   Messages.Add(_game.CurrentRoom.Description);
+      // }
+      // else
+      // {
+      //   Messages.Add("It's pitch black.");
+      // }
+
+      CurrentRoom();
+      Console.WriteLine();
     }
     public void Help()
     {
@@ -35,11 +51,11 @@ namespace ConsoleAdventure.Project
 
     public void Inventory()
     {
-      if (_game.CurrentRoom.Items.Count > 0)
+      if (_game.CurrentPlayer.Inventory.Count > 0)
       {
-        foreach (var item in _game.CurrentRoom.Items)
+        foreach (Item item in _game.CurrentPlayer.Inventory)
         {
-          Console.WriteLine(item);
+          Console.WriteLine(item.Name);
         }
       }
       else
@@ -73,7 +89,14 @@ namespace ConsoleAdventure.Project
     ///<summary>When taking an item be sure the item is in the current room before adding it to the player inventory, Also don't forget to remove the item from the room it was picked up in</summary>
     public void TakeItem(string itemName)
     {
-      throw new System.NotImplementedException();
+      Item activeItem = _game.CurrentRoom.Items.Find(i => i.Name.ToLower() == itemName);
+      if (activeItem == null)
+      {
+        Messages.Add($"No {itemName} in this room.");
+        return;
+      }
+      _game.CurrentPlayer.AddToInventory(activeItem);
+      _game.CurrentRoom.Items.Remove(activeItem);
     }
     ///<summary>
     ///No need to Pass a room since Items can only be used in the CurrentRoom

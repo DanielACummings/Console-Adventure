@@ -15,6 +15,12 @@ namespace ConsoleAdventure.Project.Models
       Exits.Add(direction, exit);
     }
 
+    public void AddItem(string name, string description)
+    {
+      var item = new Item(name, description);
+      Items.Add(item);
+    }
+
     public Room(string name, string description)
     {
       Name = name;
