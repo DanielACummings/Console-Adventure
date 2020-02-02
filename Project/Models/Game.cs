@@ -28,6 +28,7 @@ namespace ConsoleAdventure.Project.Models
       //adds items to rooms
       pit.AddItem("Torch", "Use when traveling through perilous caves.");
       secondCaveRoom.AddItem("Sword", "Handy for orc slaying.");
+      // ๏---{:::::::::::::::>҉
       thirdCaveRoom.AddItem("Ladder", "What could possibly be done with it?");
 
       CurrentRoom = pit;

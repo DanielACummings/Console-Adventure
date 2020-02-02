@@ -56,6 +56,9 @@ namespace ConsoleAdventure.Project.Controllers
         case "go":
           _gameService.Go(option);
           break;
+        case "help":
+          _gameService.Help();
+          break;
         case "quit":
           _gameService.Quit();
           break;
