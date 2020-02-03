@@ -16,9 +16,17 @@ namespace ConsoleAdventure.Project
     }
 
     //default messages
-    public void CurrentRoom()
+    public void RoomInfo()
     {
-      Console.WriteLine($"You're {_game.CurrentRoom.Name}.\n{_game.CurrentRoom.Description}");
+      Console.WriteLine($"You're {_game.CurrentRoom.Name}.");
+      if (torchEquiped == true)
+      {
+        Messages.Add(_game.CurrentRoom.Description);
+      }
+      else
+      {
+        Messages.Add("It's pitch black.");
+      };
     }
 
     public void Go(string direction)
@@ -40,13 +48,13 @@ namespace ConsoleAdventure.Project
         Messages.Add("Congratulations, you walked into a wall. Perhaps try another direction?");
       }
 
-      CurrentRoom();
+      RoomInfo();
       Console.WriteLine();
     }
 
     public void Help()
     {
-      CurrentRoom();
+      RoomInfo();
       Messages.Add("\nYou can type the following commands:\nlook - gives room description\ntake [item name] - adds item to inventory\ninventory - shows items in inventory\n use [item name] - uses item\ngo [north, south, east, or west] - makes you travel that direction\nquit - ends the game\n");
     }
 
@@ -65,20 +73,13 @@ namespace ConsoleAdventure.Project
       {
         Console.WriteLine("Your inventory is empty.");
       }
-      CurrentRoom();
+      RoomInfo();
       Console.WriteLine();
     }
 
     public void Look()
     {
-      if (torchEquiped == true)
-      {
-        Messages.Add(_game.CurrentRoom.Description);
-      }
-      else
-      {
-        Messages.Add("It's pitch black.");
-      }
+      RoomInfo();
     }
 
     public void Quit()
@@ -108,19 +109,19 @@ namespace ConsoleAdventure.Project
         return;
       }
 
-      if (activeItem.ToString() == "Torch".ToLower())
+      if (activeItem.Name.ToString() == "Torch")
       {
-        this.torchEquiped = true;
+        torchEquiped = true;
       }
 
-      if (activeItem.ToString() == "Sword".ToLower())
+      if (activeItem.Name.ToString() == "Sword")
       {
-        this.swordEquiped = true;
+        swordEquiped = true;
       }
 
       _game.CurrentPlayer.AddToInventory(activeItem);
       _game.CurrentRoom.Items.Remove(activeItem);
-      CurrentRoom();
+      RoomInfo();
 
     }
 

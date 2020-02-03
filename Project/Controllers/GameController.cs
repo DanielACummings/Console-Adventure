@@ -21,7 +21,7 @@ namespace ConsoleAdventure.Project.Controllers
 
       Console.WriteLine("On a brisk dawn while hiking along the base of the Misty Mountains,you slip & fall into a pit! You then attempt to climb out but are unable to. With nothing but a firestarter kit, you must figure out how to escape before nightfall comes when the mountainside will be swarming with orcs!\n");
       Console.WriteLine("Type \"help\" at any time to view your options.\n");
-      _gameService.CurrentRoom();
+      _gameService.RoomInfo();
       while (_playing)
       {
         Print();
