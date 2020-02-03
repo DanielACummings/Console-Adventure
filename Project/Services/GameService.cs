@@ -18,7 +18,7 @@ namespace ConsoleAdventure.Project
     //default messages
     public void CurrentRoom()
     {
-      Console.WriteLine($"You're {_game.CurrentRoom.Name}.");
+      Console.WriteLine($"You're {_game.CurrentRoom.Name}.\n{_game.CurrentRoom.Description}");
     }
 
     public void Go(string direction)
@@ -57,7 +57,7 @@ namespace ConsoleAdventure.Project
         Console.Write("Inventory:\n");
         foreach (Item item in _game.CurrentPlayer.Inventory)
         {
-          Console.WriteLine(item.Name);
+          Console.WriteLine($"{item.Name} - {item.Description}");
         }
         Console.WriteLine();
       }
