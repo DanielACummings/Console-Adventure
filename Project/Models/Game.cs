@@ -10,7 +10,7 @@ namespace ConsoleAdventure.Project.Models
     public void Setup()
     {
       //makes rooms
-      var pit = new Room("in the pit", "There's nothing but dirt wall around you.\n");
+      var pit = new Room("in the pit", "The dirt wall around you is too tall to scale. The only direction to travel is east into a cave...\n");
       // & an unlit torch near the cave entrance.
       var firstCaveRoom = new Room("one room deep", "You see dwarf & orc skeletons around the room from a past battle.\n");
       //"An orc is running at you from the north side of the room with his sword drawn!\nWhat will you do?"
@@ -26,9 +26,8 @@ namespace ConsoleAdventure.Project.Models
       thirdCaveRoom.AddExit(secondCaveRoom, "west");
 
       //adds items to rooms
-      pit.AddItem("Torch", "Use when traveling through perilous caves.");
-      secondCaveRoom.AddItem("Sword", "Handy for orc slaying.");
-      // ๏---{:::::::::::::::>҉
+      pit.AddItem("Torch", "It would be good for traveling through perilous caves.");
+      secondCaveRoom.AddItem("Sword", "Could come in handy for orc slaying.");
       thirdCaveRoom.AddItem("Ladder", "What could possibly be done with it?");
 
       CurrentRoom = pit;
