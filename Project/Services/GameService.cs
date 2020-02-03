@@ -18,35 +18,36 @@ namespace ConsoleAdventure.Project
     //default messages
     public void CurrentRoom()
     {
-      Console.WriteLine($"You're {_game.CurrentRoom.Name}.\n");
+      Console.WriteLine($"You're {_game.CurrentRoom.Name}.\n{_game.CurrentRoom.Description}");
     }
 
     public void Go(string direction)
     {
+      //special circumstance travel
+      if (_game.CurrentRoom.Name == "two rooms deep" && direction == "south")
+      {
+        Console.WriteLine("You plummet down the chasm to your death...");
+        Environment.Exit(0);
+      }
+
+      //basic travel
       if (_game.CurrentRoom.Exits.ContainsKey(direction))
       {
         _game.CurrentRoom = _game.CurrentRoom.Exits[direction];
       }
       else
       {
-        Console.WriteLine("Congratulations, you walked into a wall. Perhaps try another direction?");
+        Messages.Add("Congratulations, you walked into a wall. Perhaps try another direction?");
       }
-
-      // if (_game.CurrentPlayer.Inventory.Contains("Torch"))
-      // {
-      //   Messages.Add(_game.CurrentRoom.Description);
-      // }
-      // else
-      // {
-      //   Messages.Add("It's pitch black.");
-      // }
 
       CurrentRoom();
       Console.WriteLine();
     }
+
     public void Help()
     {
-      throw new System.NotImplementedException();
+      CurrentRoom();
+      Messages.Add("\nYou can type the following commands:\nlook - gives room description\ntake [item name] - adds item to inventory\ninventory - shows items in inventory\n use [item name] - uses item\ngo [north, south, east, or west] - makes you travel that direction\nquit - ends the game\n");
     }
 
     public void Inventory()
@@ -56,7 +57,7 @@ namespace ConsoleAdventure.Project
         Console.Write("Inventory:\n");
         foreach (Item item in _game.CurrentPlayer.Inventory)
         {
-          Console.WriteLine(item.Name);
+          Console.WriteLine($"{item.Name} - {item.Description}");
         }
         Console.WriteLine();
       }
@@ -70,7 +71,14 @@ namespace ConsoleAdventure.Project
 
     public void Look()
     {
-      Messages.Add(_game.CurrentRoom.Description);
+      if (torchEquiped == true)
+      {
+        Messages.Add(_game.CurrentRoom.Description);
+      }
+      else
+      {
+        Messages.Add("It's pitch black.");
+      }
     }
 
     public void Quit()
@@ -99,10 +107,26 @@ namespace ConsoleAdventure.Project
         Messages.Add($"No {itemName} in this room.");
         return;
       }
+
+      if (activeItem.ToString() == "Torch".ToLower())
+      {
+        this.torchEquiped = true;
+      }
+
+      if (activeItem.ToString() == "Sword".ToLower())
+      {
+        this.swordEquiped = true;
+      }
+
       _game.CurrentPlayer.AddToInventory(activeItem);
       _game.CurrentRoom.Items.Remove(activeItem);
       CurrentRoom();
+
     }
+
+    public bool torchEquiped = false;
+    public bool swordEquiped = false;
+
     ///<summary>
     ///No need to Pass a room since Items can only be used in the CurrentRoom
     ///Make sure you validate the item is in the room or player inventory before
