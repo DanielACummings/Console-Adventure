@@ -19,7 +19,11 @@ namespace ConsoleAdventure.Project
     public void RoomInfo()
     {
       Console.WriteLine($"You're {_game.CurrentRoom.Name}.");
-      if (torchEquiped == true)
+      if (_game.CurrentRoom.Name == "in the pit")
+      {
+        Messages.Add(_game.CurrentRoom.Description);
+      }
+      else if (torchEquiped == true)
       {
         Messages.Add(_game.CurrentRoom.Description);
       }
@@ -54,8 +58,7 @@ namespace ConsoleAdventure.Project
 
     public void Help()
     {
-      RoomInfo();
-      Messages.Add("\nYou can type the following commands:\nlook - gives room description\ntake [item name] - adds item to inventory\ninventory - shows items in inventory\n use [item name] - uses item\ngo [north, south, east, or west] - makes you travel that direction\nquit - ends the game\n");
+      Messages.Add("\nYou can type the following commands:\nlook - gives room description & lists room items\ntake [item name] - adds item to inventory\ninventory - shows items in inventory\n use [item name] - uses item\ngo [north, south, east, or west] - makes you travel that direction\nquit - ends the game\n");
     }
 
     public void Inventory()
@@ -73,13 +76,16 @@ namespace ConsoleAdventure.Project
       {
         Console.WriteLine("Your inventory is empty.");
       }
-      RoomInfo();
       Console.WriteLine();
     }
 
     public void Look()
     {
       RoomInfo();
+      foreach (var item in _game.CurrentRoom.Items)
+      {
+        Messages.Add($"You spot a {item.Name.ToLower()}! {item.Description}");
+      }
     }
 
     public void Quit()
@@ -102,10 +108,10 @@ namespace ConsoleAdventure.Project
     ///<summary>When taking an item be sure the item is in the current room before adding it to the player inventory, Also don't forget to remove the item from the room it was picked up in</summary>
     public void TakeItem(string itemName)
     {
-      Item activeItem = _game.CurrentRoom.Items.Find(i => i.Name.ToLower() == itemName);
+      Item activeItem = _game.CurrentRoom.Items.Find(i => i.Name.ToLower() == itemName.ToLower());
       if (activeItem == null)
       {
-        Messages.Add($"No {itemName} in this room.");
+        Messages.Add($"There's no {itemName.ToLower()} in this room.");
         return;
       }
 
@@ -117,12 +123,12 @@ namespace ConsoleAdventure.Project
       if (activeItem.Name.ToString() == "Sword")
       {
         swordEquiped = true;
+        Messages.Add("O-----{:::::::::::::::>");
       }
 
       _game.CurrentPlayer.AddToInventory(activeItem);
       _game.CurrentRoom.Items.Remove(activeItem);
-      RoomInfo();
-
+      Messages.Add($"You added the {itemName.ToLower()} to your inventory.");
     }
 
     public bool torchEquiped = false;
