@@ -14,6 +14,7 @@ namespace ConsoleAdventure.Project.Controllers
     private bool _playing = true;
     public void Run()
     {
+      Console.ForegroundColor = ConsoleColor.Green;
       Console.WriteLine("Welcome to Console Adventure!\nWhat's you're name?");
       string playerName = Console.ReadLine();
       _gameService.Setup(playerName);
@@ -23,6 +24,7 @@ namespace ConsoleAdventure.Project.Controllers
       Console.WriteLine("Type \"help\" at any time to view your options.\n");
       _gameService.RoomInfo();
       while (_playing)
+      //add :&& _gameService.running
       {
         Print();
         GetUserInput();
