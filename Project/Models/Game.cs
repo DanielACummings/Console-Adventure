@@ -17,6 +17,7 @@ namespace ConsoleAdventure.Project.Models
       var secondCaveRoom = new Room("two rooms deep", "There's a deep chasm on the south side of the room.\n");
       var thirdCaveRoom = new Room("three rooms deep", "It's a dead end! There's no way to go but back.\n");
 
+
       //makes relationships for movement between rooms
       pit.AddExit(firstCaveRoom, "east");
       firstCaveRoom.AddExit(pit, "west");
