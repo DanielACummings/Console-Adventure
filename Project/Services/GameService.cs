@@ -58,12 +58,27 @@ namespace ConsoleAdventure.Project
       //confronting orc
       if (_game.CurrentRoom.Name == "one room deep" && orcDefeated == false)
       {
-        confrontOrc();
+        confrontOrcWithoutTorch();
       }
       else
       {
         RoomInfo();
         Console.WriteLine();
+      }
+
+      if (_game.CurrentRoom.Name == "two rooms deep" && orcDefeated == false)
+      {
+        if (swordEquiped == true)
+        {
+          Messages.Add("An orc runs at you with sword drawn! He attacks you but after a struggle, you defeat the him with your sword.");
+          orcDefeated = true;
+        }
+        else
+        {
+          Messages.Add("You need more than a torch &your fists to defeat an armed orc. You are slain in battle.");
+          Console.ForegroundColor = ConsoleColor.White;
+          Environment.Exit(0);
+        }
       }
     }
 
@@ -157,11 +172,13 @@ namespace ConsoleAdventure.Project
       };
     }
 
+    //# region
     ///<summary>
     ///No need to Pass a room since Items can only be used in the CurrentRoom
     ///Make sure you validate the item is in the room or player inventory before
     ///being able to use the item
     ///</summary>
+    //# endregion
     public void UseItem(string itemName)
     {
       switch (itemName)
@@ -190,61 +207,13 @@ namespace ConsoleAdventure.Project
     public bool swordEquiped = false;
     public bool orcDefeated = false;
 
-    public void confrontOrc()
+    public void confrontOrcWithoutTorch()
     {
       if (torchEquiped == false)
       {
         Console.WriteLine("You enter the cave without any light & an orc attacks & kills you!");
         Console.ForegroundColor = ConsoleColor.White;
         Environment.Exit(0);
-      }
-      else
-      {
-        Console.WriteLine("You see an orc charging at you with a drawn sword!\nWhat will you do?");
-        ConfrontationDecision();
-      }
-    }
-
-    public void ConfrontationDecision()
-    {
-      Console.WriteLine("You can run west, run east, or attack.");
-      string input = Console.ReadLine().ToLower() + " ";
-      string firstWord = input.Substring(0, input.IndexOf(" "));
-      string secondWord = input.Substring(input.IndexOf(" ") + 1).Trim();
-      Console.Clear();
-      {
-
-      }
-      switch (input)
-      {
-        case "run west":
-          if (_game.CurrentRoom.Exits.ContainsKey(secondWord))
-          {
-            _game.CurrentRoom = _game.CurrentRoom.Exits[secondWord];
-          }
-          break;
-        case "run east":
-          if (_game.CurrentRoom.Exits.ContainsKey(secondWord))
-          {
-            _game.CurrentRoom = _game.CurrentRoom.Exits[secondWord];
-          }
-          break;
-        case "attack":
-          if (swordEquiped == true)
-          {
-            orcDefeated = true;
-            Messages.Add("You defeated the orc!");
-          }
-          else
-          {
-            Messages.Add("You need more than a torch & your fists to defeat an armed orc. You have been slain in battle.");
-            Console.ForegroundColor = ConsoleColor.White;
-            Environment.Exit(0);
-          }
-          break;
-        default:
-          Console.WriteLine("You can't do that.");
-          break;
       }
     }
   }
