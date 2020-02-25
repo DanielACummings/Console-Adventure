@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using ConsoleAdventure.Project.Interfaces;
 
 namespace ConsoleAdventure.Project.Models
