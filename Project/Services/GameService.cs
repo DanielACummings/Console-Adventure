@@ -20,7 +20,7 @@ namespace ConsoleAdventure.Project
     //default messages
     public void RoomInfo()
     {
-      Console.WriteLine($"You're {_game.CurrentRoom.Name}.");
+      Messages.Add($"You're {_game.CurrentRoom.Name}.");
       if (_game.CurrentRoom.Name == "in the pit")
       {
         Messages.Add(_game.CurrentRoom.Description);
@@ -49,6 +49,7 @@ namespace ConsoleAdventure.Project
       if (_game.CurrentRoom.Exits.ContainsKey(direction))
       {
         _game.CurrentRoom = _game.CurrentRoom.Exits[direction];
+        RoomInfo();
       }
       else
       {
@@ -56,16 +57,6 @@ namespace ConsoleAdventure.Project
       }
 
       //confronting orc
-      if (_game.CurrentRoom.Name == "one room deep" && orcDefeated == false)
-      {
-        confrontOrcWithoutTorch();
-      }
-      else
-      {
-        RoomInfo();
-        Console.WriteLine();
-      }
-
       if (_game.CurrentRoom.Name == "two rooms deep" && orcDefeated == false)
       {
         if (swordEquiped == true)
@@ -75,7 +66,7 @@ namespace ConsoleAdventure.Project
         }
         else
         {
-          Messages.Add("You need more than a torch &your fists to defeat an armed orc. You are slain in battle.");
+          Console.WriteLine("You need more than a torch & your fists to defeat an armed orc. You have been slain...");
           Console.ForegroundColor = ConsoleColor.White;
           Environment.Exit(0);
         }
@@ -151,12 +142,12 @@ namespace ConsoleAdventure.Project
         return;
       }
 
-      if (activeItem.Name.ToString() == "Torch")
+      if (activeItem.Name.ToLower() == "torch")
       {
         torchEquiped = true;
       }
 
-      if (activeItem.Name.ToString() == "Sword")
+      if (activeItem.Name.ToLower() == "sword")
       {
         swordEquiped = true;
         Messages.Add("O-----{:::::::::::::::>");
@@ -186,7 +177,7 @@ namespace ConsoleAdventure.Project
         case "ladder":
           if (_game.CurrentRoom.Name == "in the pit")
           {
-            Messages.Add($"You use the ladder to escape! Well done, {_game.CurrentPlayer.Name}!");
+            Console.WriteLine($"You use the ladder to escape! Well done, {_game.CurrentPlayer.Name}!");
             Console.ForegroundColor = ConsoleColor.White;
             Environment.Exit(0);
             // change to running = false;
@@ -206,15 +197,5 @@ namespace ConsoleAdventure.Project
     public bool torchEquiped = false;
     public bool swordEquiped = false;
     public bool orcDefeated = false;
-
-    public void confrontOrcWithoutTorch()
-    {
-      if (torchEquiped == false)
-      {
-        Console.WriteLine("You enter the cave without any light & an orc attacks & kills you!");
-        Console.ForegroundColor = ConsoleColor.White;
-        Environment.Exit(0);
-      }
-    }
   }
 }
