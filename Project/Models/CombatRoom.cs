@@ -1,3 +1,5 @@
+using ConsoleAdventure.Project.Interfaces;
+
 namespace ConsoleAdventure.Project.Models
 {
   class CombatRoom : Room

@@ -17,11 +17,10 @@ namespace ConsoleAdventure.Project.Controllers
       _gameService.Setup(playerName);
       Console.Clear();
 
-      Console.WriteLine("On a brisk dawn while hiking along the base of the Misty Mountains,you slip & fall into a pit! You then attempt to climb out but are unable to. With nothing but a firestarter kit, you must figure out how to escape before nightfall comes when the mountainside will be swarming with orcs!\n");
+      Console.WriteLine("On a brisk dawn while hiking along the base of the Misty Mountains,you slip & fall into a pit! You then attempt to climb out but are unable to.\nYou must figure out how to escape before nightfall when the mountainside will be swarming with orcs!\n");
       Console.WriteLine("Type \"help\" at any time to view your options.\n");
       _gameService.RoomInfo();
       while (_playing)
-      //add :&& _gameService.running
       {
         Print();
         GetUserInput();
@@ -30,7 +29,7 @@ namespace ConsoleAdventure.Project.Controllers
 
     public void GetUserInput()
     {
-      Console.WriteLine("What would you like to do?");
+      Console.WriteLine("\nWhat would you like to do?");
       string input = Console.ReadLine().ToLower() + " ";
       string command = input.Substring(0, input.IndexOf(" "));
       string option = input.Substring(input.IndexOf(" ") + 1).Trim();
