@@ -9,13 +9,19 @@ namespace ConsoleAdventure.Project
   {
     private IGame _game { get; set; }
     public List<string> Messages { get; set; }
-    public bool running { get; private set; }
 
     public GameService()
     {
       _game = new Game();
       Messages = new List<string>();
     }
+
+
+    //bools
+    public bool torchEquiped = false;
+    public bool swordEquiped = false;
+    public bool orcDefeated = false;
+
 
     //default messages
     public void RoomInfo()
@@ -37,15 +43,24 @@ namespace ConsoleAdventure.Project
 
     public void Go(string direction)
     {
+      // SPECIAL TRAVEL
+
+      //entering cave without a torch
+      if (_game.CurrentRoom.Name == "in the pit" && direction == "east")
+      {
+        if (torchEquiped == false)
+        {
+          this.gameOver("You were attacked by an orc you couldn't see because you entered the dark cave without a light...");
+        }
+      }
+
       //walking into pit
       if (_game.CurrentRoom.Name == "two rooms deep" && direction == "south")
       {
-        Console.WriteLine("You plummet down the chasm to your death...");
-        Console.ForegroundColor = ConsoleColor.White;
-        Environment.Exit(0);
+        this.gameOver("You plummet down a chasm to your death...");
       }
 
-      //basic travel
+      //BASIC TRAVEL
       if (_game.CurrentRoom.Exits.ContainsKey(direction))
       {
         _game.CurrentRoom = _game.CurrentRoom.Exits[direction];
@@ -55,27 +70,24 @@ namespace ConsoleAdventure.Project
       {
         Messages.Add("Congratulations, you walked into a wall. Perhaps try another direction?");
       }
-
-      //confronting orc
-      if (_game.CurrentRoom.Name == "two rooms deep" && orcDefeated == false)
-      {
-        if (swordEquiped == true)
-        {
-          Messages.Add("An orc runs at you with sword drawn! He attacks you but after a struggle, you defeat the him with your sword.");
-          orcDefeated = true;
-        }
-        else
-        {
-          Console.WriteLine("You need more than a torch & your fists to defeat an armed orc. You have been slain...");
-          Console.ForegroundColor = ConsoleColor.White;
-          Environment.Exit(0);
-        }
-      }
+      // //confronting orc
+      // if (_game.CurrentRoom.Name == "two rooms deep" && orcDefeated == false)
+      // {
+      //   if (swordEquiped == true)
+      //   {
+      //     Messages.Add("An orc runs at you with sword drawn! He attacks you but after a struggle, you defeat the him with your sword.");
+      //     orcDefeated = true;
+      //   }
+      //   else
+      //   {
+      //     this.gameOver("You need more than a torch & your fists to defeat an armed orc. You have been slain...");
+      //   }
+      // }
     }
 
     public void Help()
     {
-      Messages.Add("\nYou can type the following commands:\nlook - gives room description & lists room items\ntake [item name] - adds item to inventory\ninventory - shows items in inventory\n use [item name] - uses item\ngo [north, south, east, or west] - makes you travel that direction\nquit - ends the game\n");
+      Messages.Add("\nYou can type the following commands:\nlook - gives room description & lists room items\ntake [item name] - adds item to inventory\ninventory - shows items in inventory\nuse [item name] - uses item\ngo [north, south, east, or west] - makes you travel that direction\nquit - ends the game\n");
     }
 
     public void Inventory()
@@ -116,9 +128,7 @@ namespace ConsoleAdventure.Project
 
     public void Quit()
     {
-      Console.WriteLine("You gave in to despair & were found by orcs after nightfall...");
-      Console.ForegroundColor = ConsoleColor.White;
-      Environment.Exit(0);
+      this.gameOver("You gave in to despair & were found by orcs after nightfall...");
     }
     ///<summary>
     ///Restarts the game 
@@ -135,6 +145,8 @@ namespace ConsoleAdventure.Project
     ///<summary>When taking an item be sure the item is in the current room before adding it to the player inventory, Also don't forget to remove the item from the room it was picked up in</summary>
     public void TakeItem(string itemName)
     {
+      RoomInfo();
+
       Item activeItem = _game.CurrentRoom.Items.Find(i => i.Name.ToLower() == itemName.ToLower());
       if (activeItem == null)
       {
@@ -155,11 +167,11 @@ namespace ConsoleAdventure.Project
 
       _game.CurrentPlayer.AddToInventory(activeItem);
       _game.CurrentRoom.Items.Remove(activeItem);
-      Messages.Add($"You added the {itemName.ToLower()} to your inventory.");
+      Messages.Add($"You add the {itemName.ToLower()} to your inventory.");
 
       if (activeItem.Name.ToLower() == "torch")
       {
-        Messages.Add("You use your firestarter kit to light the torch.");
+        Messages.Add("You take the torch and light it with the some flit, steel, and char you found beside it.");
       };
     }
 
@@ -177,10 +189,7 @@ namespace ConsoleAdventure.Project
         case "ladder":
           if (_game.CurrentRoom.Name == "in the pit")
           {
-            Console.WriteLine($"You use the ladder to escape! Well done, {_game.CurrentPlayer.Name}!");
-            Console.ForegroundColor = ConsoleColor.White;
-            Environment.Exit(0);
-            // change to running = false;
+            this.gameOver($"You use the ladder to escape! Well done, {_game.CurrentPlayer.Name}!");
           }
           else
           {
@@ -193,9 +202,11 @@ namespace ConsoleAdventure.Project
       }
     }
 
-    //bools
-    public bool torchEquiped = false;
-    public bool swordEquiped = false;
-    public bool orcDefeated = false;
+    public void gameOver(string msg)
+    {
+      Console.WriteLine(msg);
+      Console.ForegroundColor = ConsoleColor.White;
+      Environment.Exit(0);
+    }
   }
 }
