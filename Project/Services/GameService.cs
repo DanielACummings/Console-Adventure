@@ -70,19 +70,19 @@ namespace ConsoleAdventure.Project
       {
         Messages.Add("Congratulations, you walked into a wall. Perhaps try another direction?");
       }
-      // //confronting orc
-      // if (_game.CurrentRoom.Name == "two rooms deep" && orcDefeated == false)
-      // {
-      //   if (swordEquiped == true)
-      //   {
-      //     Messages.Add("An orc runs at you with sword drawn! He attacks you but after a struggle, you defeat the him with your sword.");
-      //     orcDefeated = true;
-      //   }
-      //   else
-      //   {
-      //     this.gameOver("You need more than a torch & your fists to defeat an armed orc. You have been slain...");
-      //   }
-      // }
+      //confronting orc
+      if (_game.CurrentRoom.Name == "three rooms deep" && orcDefeated == false)
+      {
+        if (swordEquiped == true)
+        {
+          Messages.Add("An orc runs at you with sword drawn! He attacks you but after a struggle, you defeat the him with your sword.");
+          orcDefeated = true;
+        }
+        else
+        {
+          this.gameOver("You need more than a torch & your fists to defeat an armed orc. You have been slain...");
+        }
+      }
     }
 
     public void Help()
