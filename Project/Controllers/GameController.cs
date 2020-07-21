@@ -12,7 +12,7 @@ namespace ConsoleAdventure.Project.Controllers
     public void Run()
     {
       Console.ForegroundColor = ConsoleColor.Green;
-      Console.WriteLine("Welcome to Console Adventure!\nWhat's you're name?");
+      Console.WriteLine("Welcome to Console Adventure!\nWhat's your name?");
       string playerName = Console.ReadLine();
       _gameService.Setup(playerName);
       Console.Clear();
